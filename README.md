@@ -154,8 +154,8 @@ EOF  all  create  destroy  help  quit  show  update
 No known bugs at this time.
 
 ## Authors
-Chibuzo Ashiegbu - [Github](https://github.com/Ashiegbu) / [Twitter](https://twitter.com/Chi_Ash) / [Email](chibuch@gmail.com)  
-Ebenezer Ogidiolu - [Github](https://github.com/) / [Twitter](https://twitter.com/) / [Email](ogidioluebenezer@gmail.com)
+Chibuzo Ashiegbu - [Github](https://github.com/Ashiegbu) / [Twitter](https://twitter.com/Chi_Ash) / [Email](chibuch@gmail.com)
+Ebenezer Ogidiolu - [Github](https://github.com/dsoft02) / [Twitter](https://twitter.com/itsDsoft) / [Email](ogidioluebenezer@gmail.com)
 
 ## License
 Public Domain. No copy write protection.
