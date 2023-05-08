@@ -1,83 +1,80 @@
-document.ready(function () {
-	const HOST = "http://127.0.0.1:5001";
-	const amenities = {};
-	const cities = {};
-	const states = {};
+$('document').ready(() => {
+  const checkedAmenities = {};
+  const checkedStates = {};
+  const checkedCities = {};
 
-	$('ul li input[type="checkbox"]').bind("change", (e) => {
-		const el = e.target;
-		let tt;
-		switch (el.id) {
-			case "state_filter":
-				tt = states;
-				break;
-			case "city_filter":
-				tt = cities;
-				break;
-			case "amenity_filter":
-				tt = amenities;
-				break;
-		}
-		if (el.checked) {
-			tt[el.dataset.name] = el.dataset.id;
-		} else {
-			delete tt[el.dataset.name];
-		}
-		if (el.id === "amenity_filter") {
-			$(".amenities h4").text(Object.keys(amenities).sort().join(", "));
-		} else {
-			$(".locations h4").text(
-				Object.keys(Object.assign({}, states, cities)).sort().join(", ")
-			);
-		}
-	});
+  $('div.amenities li input').change(
+    function () {
+      if ($(this).is(':checked')) {
+        checkedAmenities[($(this).attr('data-id'))] = $(this).attr('data-name');
+      } else {
+        delete checkedAmenities[($(this).attr('data-id'))];
+      }
+      $('div.amenities h4').html(Object.values(checkedAmenities).join(', ') || '&nbsp;');
+    });
 
-	// get status of API
-	$.getJSON("http://0.0.0.0:5001/api/v1/status/", (data) => {
-		if (data.status === "OK") {
-			$("div#api_status").addClass("available");
-		} else {
-			$("div#api_status").removeClass("available");
-		}
-	});
+  $('div.locations h2 > input').change(
+    function () {
+      if ($(this).is(':checked')) {
+        checkedStates[($(this).attr('data-id'))] = $(this).attr('data-name');
+      } else {
+        delete checkedStates[($(this).attr('data-id'))];
+      }
+      const st_city = Object.values(checkedStates).concat(Object.values(checkedCities));
+      $('div.locations h4').html(st_city.join(', ') || '&nbsp;');
+    });
 
-	// fetch data about places
-	$.post({
-		url: `${HOST}/api/v1/places_search`,
-		data: JSON.stringify({}),
-		headers: {
-			"Content-Type": "application/json",
-		},
-		success: (data) => {
-			data.forEach((place) =>
-				$("section.places").append(
-					`<article>
-			<div class="title_box">
-			<h2>${place.name}</h2>
-			<div class="price_by_night">$${place.price_by_night}</div>
-			</div>
-			<div class="information">
-			<div class="max_guest">${place.max_guest} Guest${
-						place.max_guest !== 1 ? "s" : ""
-					}</div>
-			<div class="number_rooms">${place.number_rooms} Bedroom${
-						place.number_rooms !== 1 ? "s" : ""
-					}</div>
-			<div class="number_bathrooms">${place.number_bathrooms} Bathroom${
-						place.number_bathrooms !== 1 ? "s" : ""
-					}</div>
-			</div> 
-			<div class="description">
-			${place.description}
-			</div>
-				</article>`
-				)
-			);
-		},
-		dataType: "json",
-	});
+  $('div.locations li input').change(
+    function () {
+      if ($(this).is(':checked')) {
+        checkedCities[($(this).attr('data-id'))] = $(this).attr('data-name');
+      } else {
+        delete checkedCities[($(this).attr('data-id'))];
+      }
+      const st_city = Object.values(checkedStates).concat(Object.values(checkedCities));
+      $('div.locations h4').html(st_city.join(', ') || '&nbsp;');
+    });
 
-	// search places
-	$(".filters button").bind("click", searchPlace);
-	searchPlace();
+  $.get('http://0.0.0.0:5001/api/v1/status/', (data) => {
+    if (data.status === 'OK') {
+      $('div#api_status').addClass('available');
+    } else {
+      $('div#api_status').removeClass('available');
+    }
+  });
+
+  $('button').click(() => {
+    const checkedItems = {
+      amenities: Object.keys(checkedAmenities),
+      states: Object.keys(checkedStates),
+      cities: Object.keys(checkedCities)
+    };
+    $.ajax('http://0.0.0.0:5001/api/v1/places_search/', {
+      data: JSON.stringify(checkedItems),
+      contentType: 'application/json',
+      type: 'POST',
+      success: data => {
+        for (const place of data) {
+          const template = `<article>
+              <div class="title_box">
+                <h2>${place.name}</h2>
+                <div class="price_by_night">
+                  $${place.price_by_night}
+                </div>
+              </div>
+
+              <div class="information">
+                <div class="max_guest">${place.max_guest} Guests</div>
+                <div class="number_rooms">${place.number_rooms} Bedrooms</div>
+                <div class="number_bathrooms">${place.number_bathrooms} Bathrooms</div>
+              </div>
+              <div class="description">
+                ${place.description}
+              </div>
+            </article>`;
+          $('section.places').append(template);
+        }
+      }
+    });
+  });
 });
