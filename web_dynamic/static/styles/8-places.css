@@ -99,3 +99,34 @@
 .user {
   margin-bottom: 1.5%;
 }
+
+section.places article div.amenities h2,
+section.places article div.reviews h2 {
+	font-size: 16px;
+	margin: 10px 5px 10px 0;
+	padding: 10px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+section.places article div.reviews li h3 {
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+}
+
+section.places article div.reviews li p {
+	font-size: 14px;
+	margin: 5px 0 0 0;
+	padding: 0;
+}
+
+section.places article div.amenities ul,
+section.places article div.reviews ul {
+	list-style-type: none;
+	padding-inline-start: 0;
+}
+
+section.places article div.reviews li:not(:first-child) {
+	padding-top: 20px;
+}
+
