@@ -1,11 +1,13 @@
-document.ready(function () {
-	const amenities = {};
-	$("li input[type=checkbox]").change(function () {
-		if (this.checked) {
-			amenities[this.dataset.name] = this.dataset.id;
-		} else {
-			delete amenities[this.dataset.name];
-		}
-		$(".amenities h4").text(Object.keys(amenities).sort().join(", "));
-	});
+$(() => {
+  const checkedAmenities = {};
+
+  $('div.amenities li input').change(
+    function () {
+      if ($(this).is(':checked')) {
+        checkedAmenities[($(this).attr('data-id'))] = $(this).attr('data-name');
+      } else {
+        delete checkedAmenities[($(this).attr('data-id'))];
+      }
+      $('div.amenities h4').html(Object.values(checkedAmenities).join(', ') || '&nbsp;');
+    });
 });
