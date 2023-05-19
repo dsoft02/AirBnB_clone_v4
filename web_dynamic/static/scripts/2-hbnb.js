@@ -11,7 +11,7 @@ $('document').ready(() => {
       $('div.amenities h4').html(Object.values(checkedAmenities).join(', ') || '&nbsp;');
     });
 
-  $.get('http://100.26.222.79/api/v1/status', (data) => {
+  $.get('http://100.26.222.79/api/v1/status/', (data) => {
     if (data.status === 'OK') {
       $('div#api_status').addClass('available');
     } else {
