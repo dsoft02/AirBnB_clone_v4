@@ -11,7 +11,7 @@ $('document').ready(() => {
       $('div.amenities h4').html(Object.values(checkedAmenities).join(', ') || '&nbsp;');
     });
 
-  $.get('http://127.0.0.1:5002/api/v1/status/', (data) => {
+  $.get('http://127.0.0.1:5002/api/v1/status', (data) => {
     if (data.status === 'OK') {
       $('div#api_status').addClass('available');
     } else {
