@@ -76,7 +76,7 @@
 							<div class="number_bathrooms">{{ place.number_bathrooms }} Bathroom{% if place.number_bathrooms != 1 %}s{% endif %}</div>
 						</div>
 						<div class="user">
-							<b>Owner:</b> {{ users[place.user_id].get('first_name') }} {{ users[place.user_id].get('last_name') }}
+							<STRONG>Owner:</STRONG> {{ users[place.user_id] }}
 						</div>
 						<div class="description">
 							{{ place.description | safe }}
