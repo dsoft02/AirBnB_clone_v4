@@ -1,13 +1,18 @@
 #!/usr/bin/python3
-""" Starts a Flash Web Application """
+""" Starts a Flask Web Application """
+import sys
+sys.path.append('..')
 import uuid
 from models import storage
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
+from models.user import User
 from os import environ
 from flask import Flask, render_template
+
+
 app = Flask(__name__)
 # app.jinja_env.trim_blocks = True
 # app.jinja_env.lstrip_blocks = True
@@ -36,13 +41,18 @@ def hbnb():
     places = storage.all(Place).values()
     places = sorted(places, key=lambda k: k.name)
 
+    users = storage.all(User).values()
+    users = {user.id: user for user in users}
+
     return render_template('2-hbnb.html',
                            states=st_ct,
                            amenities=amenities,
                            places=places,
+                           users=users,
                            cache_id=cache_id)
 
 
 if __name__ == "__main__":
     """ Main Function """
     app.run(host='0.0.0.0', port=5000)
+
